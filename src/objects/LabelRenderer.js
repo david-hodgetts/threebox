@@ -2,84 +2,88 @@
  * @author jscastro / https://github.com/jscastro76
  */
 
-var THREE = require("./CSS2DRenderer.js");
 
-function LabelRenderer(map) {
+import { CSS2DRenderer } from './CSS2DRenderer';
 
-	this.map = map;
+export default class LabelRenderer
+{
 
-	this.minzoom = map.minzoom;
+	constructor(map){
 
-	this.maxzoom = map.maxzoom;
+		this.map = map;
 
-	var zoomEventHandler;
-	var onZoomRange = true;
+		this.minzoom = map.minzoom;
 
-	this.renderer = new THREE.CSS2DRenderer();
+		this.maxzoom = map.maxzoom;
 
-	this.renderer.setSize(this.map.getCanvas().clientWidth, this.map.getCanvas().clientHeight);
-	this.renderer.domElement.style.position = 'absolute';
-	this.renderer.domElement.id = 'labelCanvas'; //TODO: this value must come by parameter
-	this.renderer.domElement.style.top = 0;
-	this.map.getCanvasContainer().appendChild(this.renderer.domElement);
+		this.zoomEventHandler;
+		this.onZoomRange = true;
 
-	this.scene, this.camera;
+		this.renderer = new CSS2DRenderer();
 
-	this.dispose = function () {
+		this.renderer.setSize(this.map.getCanvas().clientWidth, this.map.getCanvas().clientHeight);
+		this.renderer.domElement.style.position = 'absolute';
+		this.renderer.domElement.id = 'labelCanvas'; //TODO: this value must come by parameter
+		this.renderer.domElement.style.top = 0;
+		this.map.getCanvasContainer().appendChild(this.renderer.domElement);
+
+		this.scene, this.camera;
+		
+		this.map.on('resize', function () {
+			this.renderer.setSize(this.map.getCanvas().clientWidth, this.map.getCanvas().clientHeight);
+		}.bind(this));
+		this.state = {
+			reset: function () {
+				//TODO: Implement a good state reset, check out what is made in WebGlRenderer
+			}
+		}
+	}
+
+	dispose () {
 		this.map.getCanvasContainer().removeChild(this.renderer.domElement)
 		this.renderer.domElement.remove();
 		this.renderer = {};
 	}
 
-	this.setSize = function (width, height) {
+	setSize(width, height) {
 		this.renderer.setSize(width, height);
 	}
 
-	this.map.on('resize', function () {
-		this.renderer.setSize(this.map.getCanvas().clientWidth, this.map.getCanvas().clientHeight);
-	}.bind(this));
-
-	this.state = {
-		reset: function () {
-			//TODO: Implement a good state reset, check out what is made in WebGlRenderer
-		}
-	}
-
-	this.render = function (scene, camera) {
+	render(scene, camera) {
 		this.scene = scene;
 		this.camera = camera;
 		this.renderer.render(scene, camera);
 	}
 
-	this.setZoomRange = function (minzoom, maxzoom) {
+	setZoomRange(minzoom, maxzoom) {
 		//[jscastro] we only attach once if there are multiple custom layers
-		if (!zoomEventHandler) {
+		if (!this.zoomEventHandler) {
 			this.minzoom = minzoom;
 			this.maxzoom = maxzoom;
-			zoomEventHandler = this.mapZoom.bind(this);
-			this.map.on('zoom', zoomEventHandler);
+			this.zoomEventHandler = this.mapZoom.bind(this);
+			this.map.on('zoom', this.zoomEventHandler);
 		}
-	};
+	}
 
-	this.mapZoom = function (e) {
+	mapZoom(e) {
 		if (this.map.getZoom() < this.minzoom || this.map.getZoom() > this.maxzoom) {
 			this.toggleLabels(false);
 		} else {
 			this.toggleLabels(true);
 		}
-	};
+	}
 
 	//[jscastro] method to toggle Layer visibility
-	this.toggleLabels = function (visible) {
-		if (onZoomRange != visible) {
+	toggleLabels(visible) {
+		if (this.onZoomRange != visible) {
 			// [jscastro] Render any label
 			this.setVisibility(visible, this.scene, this.camera, this.renderer);
-			onZoomRange = visible;
+			this.onZoomRange = visible;
 		}
-	};
+	}
 
 	//[jscastro] method to set visibility
-	this.setVisibility = function (visible, scene, camera, renderer) {
+	setVisibility(visible, scene, camera, renderer) {
 		var cache = this.renderer.cacheList;
 		cache.forEach(function (l) {
 			if (l.visible != visible) {
@@ -89,8 +93,5 @@ function LabelRenderer(map) {
 				}
 			}
 		});
-	};
-
+	}
 }
-
-module.exports = exports = LabelRenderer;

@@ -3,15 +3,17 @@
  * @author jscastro / https://github.com/jscastro76
  */
 
-var utils = require("../utils/utils.js");
+import utils from "../utils/utils.js";
 var material = require("../utils/material.js");
-const THREE = require('../three.js');
 
-const AnimationManager = require("../animation/AnimationManager.js");
-const CSS2D = require("./CSS2DRenderer.js");
+import * as THREE from 'three';
+
+import AnimationManager from '../animation/animationManager';
+
+import { CSS2DObject, CSS2DRenderer } from './CSS2DRenderer.js';
 
 
-function Objects(){
+export default function Objects(){
 
 }
 
@@ -399,7 +401,7 @@ Objects.prototype = {
 				const size = box.getSize(new THREE.Vector3());
 				let bottomLeft = { x: box.max.x, y: box.max.y, z: box.min.z };
 				obj.removeLabel();
-				let label = new CSS2D.CSS2DObject(div);
+				let label = new CSS2DObject(div);
 				label.name = "label";
 				label.position.set(((-size.x * 0.5) - obj.model.position.x - center.x + bottomLeft.x), ((-size.y * 0.5) - obj.model.position.y - center.y + bottomLeft.y), size.z * 0.5); //middle-centered
 				label.visible = visible;
@@ -416,7 +418,7 @@ Objects.prototype = {
 					const size = box.getSize(new THREE.Vector3());
 					let bottomLeft = { x: box.max.x, y: box.max.y, z: box.min.z };
 					obj.removeTooltip();
-					let tooltip = new CSS2D.CSS2DObject(divToolTip);
+					let tooltip = new CSS2DObject(divToolTip);
 					tooltip.name = "tooltip";
 					tooltip.position.set(((-size.x * 0.5) - obj.model.position.x - center.x + bottomLeft.x), ((-size.y * 0.5) - obj.model.position.y - center.y + bottomLeft.y), size.z); //top-centered
 					tooltip.visible = false; //only visible on mouseover or selected
@@ -943,5 +945,3 @@ Objects.prototype = {
 		sphere: ['Point'],
 	}
 }
-
-module.exports = exports = Objects;

@@ -1,6 +1,6 @@
 // Type validator
 
-function Validate(){
+export default function Validate(){
 
 };
 
@@ -110,6 +110,3 @@ Validate.prototype = {
     }
 
 }
-
-
-module.exports = exports = Validate;

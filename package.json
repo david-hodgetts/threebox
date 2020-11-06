@@ -14,8 +14,7 @@
     },
     "homepage": "https://github.com/jscastro76/threebox#readme",
     "scripts": {
-        "build": "browserify -g ./node_modules/uglifyify exports.js > dist/threebox.min.js",
-        "dev": "watchify exports.js --verbose -o dist/threebox.js ",
+        "dev": "parcel playground/index.html",
         "all": "browserify -g ./node_modules/uglifyify exports.js > dist/threebox.min.js && watchify exports.js --verbose -o dist/threebox.js && ncp ./dist C:\\Users\\jscastro\\source\\repos\\archean-incubator\\mapbox-poc\\AdminLTE-master\\Scripts\\ --stopOnErr",
         "test": "browserify tests/threebox-tests.js > tests/threebox-tests-bundle.js",
         "start": "node server.js"
@@ -35,11 +34,23 @@
         "example": "examples",
         "test": "tests"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "mapbox-gl": "^1.12.0",
+        "parcel-bundler": "^1.12.4",
+        "parcel-plugin-static-files-copy": "^2.5.0",
+        "three": "^0.122.0"
+    },
     "keywords": [
         "three.js",
         "mapbox",
         "mapbox-gl-js",
         "3D"
+    ],
+    "browserslist": [
+        "last 3 and_chr versions",
+        "last 3 chrome versions",
+        "last 3 opera versions",
+        "last 3 ios_saf versions",
+        "last 3 safari versions"
     ]
 }

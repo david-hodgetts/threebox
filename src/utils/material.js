@@ -5,8 +5,9 @@
 // - specify a `material` string, `color`, and/or `opacity` as modifications of the default material
 // - provide none of these parameters, to use the default material
 
-var utils = require("../utils/utils.js");
-var THREE = require("../three.js");
+import utils from '../utils/utils.js';
+
+import * as THREE from 'three';
 
 var defaults = {
 	material: 'MeshBasicMaterial',
@@ -15,7 +16,7 @@ var defaults = {
 };
 
 
-function material (options) {
+export function material (options) {
 
 	var output;
 
@@ -48,4 +49,3 @@ function material (options) {
 	return output
 }
 
-module.exports = exports = material;

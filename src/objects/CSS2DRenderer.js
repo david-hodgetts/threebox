@@ -2,8 +2,10 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-const THREE = require('../three.js');
-THREE.CSS2DObject = function (element) {
+
+import * as THREE from 'three';
+
+export function CSS2DObject (element) {
 
 	THREE.Object3D.call(this);
 
@@ -33,7 +35,7 @@ THREE.CSS2DObject = function (element) {
 
 };
 
-THREE.CSS2DObject.prototype = Object.assign(Object.create(THREE.Object3D.prototype), {
+CSS2DObject.prototype = Object.assign(Object.create(THREE.Object3D.prototype), {
 
 	constructor: THREE.CSS2DObject,
 
@@ -49,7 +51,7 @@ THREE.CSS2DObject.prototype = Object.assign(Object.create(THREE.Object3D.prototy
 
 });
 
-THREE.CSS2DRenderer = function () {
+export function CSS2DRenderer () {
 
 	var _this = this;
 
@@ -219,5 +221,4 @@ THREE.CSS2DRenderer = function () {
 
 };
 
-module.exports = exports = { CSS2DRenderer: THREE.CSS2DRenderer, CSS2DObject: THREE.CSS2DObject };
 
